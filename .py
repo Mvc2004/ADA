@@ -3,7 +3,7 @@ from tkinter import filedialog, messagebox
 
 class NodoRB:
     def __init__(self, palabra):
-        self.palabra = palabra
+        self.palabra = palabra #hola rojo
         self.color = 'rojo'  # Color inicial (rojo por defecto)
         self.izquierda = None
         self.derecha = None
@@ -11,42 +11,49 @@ class NodoRB:
 
 class ArbolRojinegro:
     def __init__(self):
-        self.NIL = NodoRB(None)  # Nodo NIL (vacío) usado en los árboles
+        self.NIL = NodoRB(None)  # Nodo NIL (vacío), que es negro
         self.NIL.color = 'negro'  # El nodo NIL es negro
-        self.raiz = self.NIL  # La raíz es inicialmente NIL
+        self.raiz = self.NIL  # La raíz del árbol es inicialmente NIL
 
     def insertar(self, palabra):
-        nuevo_nodo = NodoRB(palabra)
+        nuevo_nodo = NodoRB(palabra)  # Crear un nuevo nodo con la palabra
         nodo_actual = self.raiz
         padre = None
+        
+        # Buscar el lugar donde insertar el nuevo nodo
         while nodo_actual != self.NIL:
             padre = nodo_actual
             if palabra < nodo_actual.palabra:
                 nodo_actual = nodo_actual.izquierda
             else:
                 nodo_actual = nodo_actual.derecha
+        
+        # Asignar el padre del nuevo nodo
         nuevo_nodo.padre = padre
         if padre is None:
-            self.raiz = nuevo_nodo
+            self.raiz = nuevo_nodo  # Si no tiene padre, es la raíz
         elif palabra < padre.palabra:
             padre.izquierda = nuevo_nodo
         else:
             padre.derecha = nuevo_nodo
+        
         nuevo_nodo.izquierda = self.NIL
         nuevo_nodo.derecha = self.NIL
-        nuevo_nodo.color = 'rojo'  # Nuevo nodo es rojo por defecto
-
-        if nuevo_nodo.padre is None:  # Si es la raíz
+        
+        # Si el nuevo nodo es la raíz, se asegura que sea negro
+        if nuevo_nodo.padre is None:
             nuevo_nodo.color = 'negro'
             return
-    
+        
+        # Balanceo del árbol después de insertar el nodo
         self._balancear_insercion(nuevo_nodo)
 
     def _balancear_insercion(self, nodo):
-        while nodo.padre.color is not None and nodo.padre.color == 'rojo':
+        while nodo.padre.color == 'rojo':  # Mientras el padre sea rojo
             if nodo.padre == nodo.padre.padre.izquierda:
-                tio = nodo.padre.padre.derecha
+                tio = nodo.padre.padre.derecha  # El tío del nodo
                 if tio.color == 'rojo':
+                    # Caso 1: El tío es rojo, se hace recoloreo
                     nodo.padre.color = 'negro'
                     tio.color = 'negro'
                     nodo.padre.padre.color = 'rojo'
@@ -54,13 +61,14 @@ class ArbolRojinegro:
                 else:
                     if nodo == nodo.padre.derecha:
                         nodo = nodo.padre
-                        self._rotacion_izquierda(nodo)
+                        self._rotacion_izquierda(nodo)  # Rotación izquierda
                     nodo.padre.color = 'negro'
                     nodo.padre.padre.color = 'rojo'
-                    self._rotacion_derecha(nodo.padre.padre)
+                    self._rotacion_derecha(nodo.padre.padre)  # Rotación derecha
             else:
                 tio = nodo.padre.padre.izquierda
                 if tio.color == 'rojo':
+                    # Caso 2: El tío es rojo, se hace recoloreo
                     nodo.padre.color = 'negro'
                     tio.color = 'negro'
                     nodo.padre.padre.color = 'rojo'
@@ -68,13 +76,13 @@ class ArbolRojinegro:
                 else:
                     if nodo == nodo.padre.izquierda:
                         nodo = nodo.padre
-                        self._rotacion_derecha(nodo)
+                        self._rotacion_derecha(nodo)  # Rotación derecha
                     nodo.padre.color = 'negro'
                     nodo.padre.padre.color = 'rojo'
-                    self._rotacion_izquierda(nodo.padre.padre)
+                    self._rotacion_izquierda(nodo.padre.padre)  # Rotación izquierda
             if nodo == self.raiz:
                 break
-        self.raiz.color = 'negro'
+        self.raiz.color = 'negro'  # La raíz siempre debe ser negra
 
     def _rotacion_izquierda(self, x):
         y = x.derecha
@@ -136,6 +144,7 @@ class ArbolRojinegro:
             print("   " * nivel + f"{nodo.palabra} ({nodo.color})")
             self.mostrar_arbol(nodo.izquierda, nivel + 1)
 
+
 # Funciones de la GUI
 def cargar_y_llenar_arbol():
     archivo = filedialog.askopenfilename(title="Seleccionar archivo de texto", filetypes=[("Text files", "*.txt")])
@@ -186,34 +195,40 @@ def generar_estructura_arbol(nodo, prefijo, es_izquierdo):
 # GUI con Tkinter
 ventana = tk.Tk()
 ventana.title("Ordenador de Palabras - Árbol Rojinegro")
+ventana.geometry("500x500")
+ventana.configure(bg="white")
 
 arbol = ArbolRojinegro()
 
-frame = tk.Frame(ventana)
-frame.pack(padx=10, pady=10)
+frame = tk.Frame(ventana,bg="white", padx=10, pady=10, relief="ridge")
+frame.pack(fill=tk.X, pady=10)
 
-boton_cargar = tk.Button(frame, text="Cargar archivo", command=cargar_y_llenar_arbol)
-boton_cargar.grid(row=0, column=0, padx=5, pady=5)
+boton_buscar = tk.Button(frame, text="Buscar palabra",font=("Arial", 12),
+            bg="#4682b4", fg="white", command=buscar_palabra)
+boton_buscar.grid(row=2, column=5, padx=5, pady=5)
 
-entrada_palabra = tk.Entry(frame)
-entrada_palabra.grid(row=1, column=0, padx=5, pady=5)
+entrada_palabra = tk.Entry(frame,font=("Arial", 12))
+entrada_palabra.grid(row=1, column=5, padx=5, pady=5)
 
-boton_buscar = tk.Button(frame, text="Buscar palabra", command=buscar_palabra)
-boton_buscar.grid(row=1, column=1, padx=5, pady=5)
+boton_cargar = tk.Button(frame, text="Cargar archivo", font=("Arial", 12),
+            bg="#ff8c00", fg="white", command=cargar_y_llenar_arbol)
+boton_cargar.grid(row=0, column=5, padx=5, pady=5)
 
-resultado_busqueda = tk.Label(frame, text="Resultado de la búsqueda:")
-resultado_busqueda.grid(row=2, column=0, columnspan=2, pady=5)
+resultado_busqueda = tk.Label(frame, text="Resultado de la búsqueda:", font=("Arial", 12), bg="white", fg="black")
+resultado_busqueda.grid(row=3, column=5, columnspan=2, pady=5)
 
-boton_ordenadas = tk.Button(frame, text="Mostrar palabras ordenadas", command=mostrar_palabras_ordenadas)
-boton_ordenadas.grid(row=3, column=0, columnspan=2, pady=5)
+boton_ordenadas = tk.Button(frame, text="Mostrar palabras ordenadas", font=("Arial", 12),
+bg="#FF748B", fg="white", command=mostrar_palabras_ordenadas)
+boton_ordenadas.grid(row=4, column=5, columnspan=2, pady=5)
 
-resultado_palabras = tk.Label(frame, text="Palabras ordenadas:", justify="left", anchor="w")
-resultado_palabras.grid(row=4, column=0, columnspan=2, pady=5)
+resultado_palabras = tk.Label(frame, text="Palabras ordenadas:", font=("Arial", 12), bg="white", fg="black", justify="left", anchor="w")
+resultado_palabras.grid(row=5, column=5, columnspan=2, pady=5)
 
-boton_arbol = tk.Button(frame, text="Mostrar árbol rojinegro", command=mostrar_arbol)
-boton_arbol.grid(row=5, column=0, columnspan=2, pady=5)
+boton_arbol = tk.Button(frame, text="Mostrar árbol rojinegro", font=("Arial", 12),
+bg="#FF2929", fg="white", command=mostrar_arbol)
+boton_arbol.grid(row=6, column=5, columnspan=2, pady=5)
 
-resultado_arbol = tk.Label(frame, text="Árbol Rojinegro:", justify="left", anchor="w")
-resultado_arbol.grid(row=6, column=0, columnspan=2, pady=5)
-
+resultado_arbol = tk.Label(frame, text="Árbol Rojinegro:",font=("Arial", 12),
+            bg="white", fg="black", justify="left", anchor="w")
+resultado_arbol.grid(row=7, column=5, columnspan=2, pady=5)
 ventana.mainloop()
