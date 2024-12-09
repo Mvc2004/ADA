@@ -31,7 +31,9 @@ class ArbolRojinegro:
         # Asignar el padre del nuevo nodo
         nuevo_nodo.padre = padre
         if padre is None:
-            self.raiz = nuevo_nodo  # Si no tiene padre, es la raíz
+            self.raiz = nuevo_nodo 
+        elif padre == self.raiz:
+            padre = nuevo_nodo 
         elif palabra < padre.palabra:
             padre.izquierda = nuevo_nodo
         else:
@@ -61,10 +63,10 @@ class ArbolRojinegro:
                 else:
                     if nodo == nodo.padre.derecha:
                         nodo = nodo.padre
-                        self._rotacion_izquierda(nodo)  # Rotación izquierda
+                        ##self._rotacion_izquierda(nodo)  # Rotación izquierda
                     nodo.padre.color = 'negro'
                     nodo.padre.padre.color = 'rojo'
-                    self._rotacion_derecha(nodo.padre.padre)  # Rotación derecha
+                    #self._rotacion_derecha(nodo.padre.padre)  # Rotación derecha
             else:
                 tio = nodo.padre.padre.izquierda
                 if tio.color == 'rojo':
