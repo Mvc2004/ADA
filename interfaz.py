@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 
 class InterfazGrafica:
+
     def __init__(self, raiz):
         self.raiz = raiz  # Instancia del árbol
         self.ventana = tk.Tk()
@@ -38,6 +39,8 @@ class InterfazGrafica:
         if palabra:
             self.raiz.insertar(palabra)
             self.resultado.insert(tk.END, f"Palabra '{palabra}' insertada.\n")
+            with open("palabras.txt", "a") as paI:
+             paI.write(palabra)
         else:
             self.resultado.insert(tk.END, "Por favor, ingresa una palabra.\n")
 

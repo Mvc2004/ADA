@@ -36,10 +36,14 @@ class ArbolRojinegro:
         nuevo_nodo.derecha = self.NIL
         nuevo_nodo.color = 'rojo'  # Nuevo nodo es rojo por defecto
 
+        if nuevo_nodo.padre is None:  # Si es la raíz
+            nuevo_nodo.color = 'negro'
+            return
+    
         self._balancear_insercion(nuevo_nodo)
 
     def _balancear_insercion(self, nodo):
-        while nodo.padre.color == 'rojo':
+        while nodo.padre.color is not None and nodo.padre.color == 'rojo':
             if nodo.padre == nodo.padre.padre.izquierda:
                 tio = nodo.padre.padre.derecha
                 if tio.color == 'rojo':
@@ -136,8 +140,9 @@ class ArbolRojinegro:
 def cargar_y_llenar_arbol():
     archivo = filedialog.askopenfilename(title="Seleccionar archivo de texto", filetypes=[("Text files", "*.txt")])
     if archivo:
+        
         with open(archivo, 'r') as f:
-            palabras = [linea.strip() for linea in f.readlines()]
+            palabras = [linea.strip() for linea in f.readlines() if linea.strip()]
             for palabra in palabras:
                 arbol.insertar(palabra)
         messagebox.showinfo("Carga completa", "Archivo cargado correctamente y árbol llenado.")

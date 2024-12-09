@@ -5,11 +5,12 @@ class Nodo:
         self.derecha = None
 
 class ArbolBinarioBusqueda:
+
     def __init__(self):
         self.raiz = None
 
     def insertar(self, palabra):
-        if not self.raiz:
+        if not self.raiz: #si es vacia pañabra se convierte en la raiz
             self.raiz = Nodo(palabra)
         else:
             self._insertar_nodo(self.raiz, palabra)
