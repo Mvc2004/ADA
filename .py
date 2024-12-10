@@ -8,6 +8,10 @@ class NodoRB:
         self.izquierda = None
         self.derecha = None
         self.padre = None
+    def __str__(self):
+        if self.palabra is None:
+            return "NIL"
+        return f"{self.palabra} ({self.color})"
 
 class ArbolRojinegro:
     def __init__(self):
@@ -16,34 +20,37 @@ class ArbolRojinegro:
         self.raiz = self.NIL  # La raíz del árbol es inicialmente NIL
 
     def insertar(self, palabra):
+        
         nuevo_nodo = NodoRB(palabra) # Crear un nuevo nodo con la palabra
+        
         print(str(nuevo_nodo))
         print(self.raiz)
         nodo_actual = self.raiz
         print(nodo_actual)
         padre = None
-        print("padre" + str(padre))
-        
+        print("padre " + str(padre))
+        print("nodo actual izquierda " + str(nodo_actual.izquierda))
         # Buscar el lugar donde insertar el nuevo nodo
         while nodo_actual != self.NIL:
             padre = nodo_actual
-            print("padre actualizado" + str(padre))
+            print("padre actualizado " + str(padre))
             if palabra < nodo_actual.palabra:
                 nodo_actual = nodo_actual.izquierda
                 print("ndoo actual izq" + str(nodo_actual))
+                print("ndoo nuevo " + str(nuevo_nodo))
             else:
                 nodo_actual = nodo_actual.derecha
                 print("ndoo actual der" + str(nodo_actual))
+                print("ndoo nuevo " + str(nuevo_nodo))
         
         # Asignar el padre del nuevo nodo
         nuevo_nodo.padre = padre
+        
         print("nuevo nodo padre" + str(nuevo_nodo.padre))
+        #print("padre palabra" + padre.palabra)
         if padre is None:
             self.raiz = nuevo_nodo 
             print("raiz" + str(self.raiz))
-        elif padre == self.raiz:
-            padre = nuevo_nodo 
-            print("padre" + str(padre))
         elif palabra < padre.palabra:
             padre.izquierda = nuevo_nodo
             print("padre izq" + str(padre.izquierda))
@@ -53,6 +60,7 @@ class ArbolRojinegro:
         
         nuevo_nodo.izquierda = self.NIL
         nuevo_nodo.derecha = self.NIL
+        nuevo_nodo.color = 'rojo' 
         
         # Si el nuevo nodo es la raíz, se asegura que sea negro
         if nuevo_nodo.padre is None:
@@ -172,6 +180,7 @@ class ArbolRojinegro:
 
 # Funciones de la GUI
 def cargar_y_llenar_arbol():
+
     archivo = filedialog.askopenfilename(title="Seleccionar archivo de texto", filetypes=[("Text files", "*.txt")])
     if archivo:
         
