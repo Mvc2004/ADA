@@ -82,10 +82,12 @@ class ArbolRojinegro:
         print("nodo" + str(nodo))
         print("nodo padre" + str(nodo.padre))
         print("nodo padre color" + str(nodo.padre.color))
+
         while nodo.padre.color == 'rojo':  # Mientras el padre sea rojo
             print("ENTRAAAAAAAAAAAAAAAA")
             print("nodo padre" + str(nodo.padre))
             print("nodo padre padre iz" + str(nodo.padre.padre.izquierda))
+
             if nodo.padre == nodo.padre.padre.izquierda:
                 print("ENTRAAAAAAAAAAAAAAAA X2222222222")
                 print("nodo padre" + str(nodo.padre))
@@ -101,13 +103,32 @@ class ArbolRojinegro:
                     nodo = nodo.padre.padre
                     print("nodo" + str(nodo))
 
+                elif tio.color == 'negro': #caso 2
+                    print("TIO COLOR NEGRO")
+                    print("nodo padre der" + str(nodo.padre.derecha))
+
+                    if nodo == nodo.padre.derecha:
+                        nodo = nodo.padre
+                        print("nodo " + str(nodo.padre))
+                        self._rotacion_izquierda(nodo)  # Rotación derecha
+                        nodo.padre.color = 'negro'
+                        nodo.padre.padre.color = 'rojo'
+                """else:
+                    print("nodo padre der" + nodo.padre.derecha)
+                    if nodo == nodo.padre.derecha:
+                        nodo = nodo.padre
+                        print("nodo " + str(nodo.padre))
+                        ##self._rotacion_izquierda(nodo)  # Rotación izquierda
+                    nodo.padre.color = 'negro'
+                    nodo.padre.padre.color = 'rojo'
+                    #self._rotacion_derecha(nodo.padre.padre)  # Rotación derecha"""
             elif nodo.padre == nodo.padre.padre.derecha:
                 print("ENTRAAAAAAAAAAAAAAAA X33333")
                 print("nodo padre" + str(nodo.padre))
                 print("nodo padreádre diz" + str(nodo.padre.padre.izquierda))
                 print("nodo padrepadre" + str(nodo.padre.padre.derecha))
-                tio = nodo.padre.padre.derecha  # El tío del nodo
-                print("tio" + str(nodo.padre.padre.derecha) + str(tio.color))
+                tio = nodo.padre.padre.izquierda  # El tío del nodo
+                print("tio" + str(nodo.padre.padre.izquierda) + str(tio.color))
                 if tio.color == 'rojo':
                     # Caso 1: El tío es rojo, se hace recoloreo
                     nodo.padre.color = 'negro'
@@ -115,30 +136,22 @@ class ArbolRojinegro:
                     nodo.padre.padre.color = 'rojo'
                     nodo = nodo.padre.padre
                     print("nodo" + str(nodo))
-                else:
+
+                elif tio.color == 'negro' or tio is self.NIL: #caso 2
+                    print("TIO COLOR NEGRO")
                     print("nodo padre der" + str(nodo.padre.derecha))
-                    if nodo == nodo.padre.derecha:
-                        nodo = nodo.padre
-                        print("nodo " + str(nodo.padre))
-                        ##self._rotacion_izquierda(nodo)  # Rotación izquierda
-                    nodo.padre.color = 'negro'
-                    nodo.padre.padre.color = 'rojo'
-                    #self._rotacion_derecha(nodo.padre.padre)  # Rotación derecha
-            else:
-                tio = nodo.padre.padre.izquierda
-                if tio.color == 'rojo':
-                    # Caso 2: El tío es rojo, se hace recoloreo
-                    nodo.padre.color = 'negro'
-                    tio.color = 'negro'
-                    nodo.padre.padre.color = 'rojo'
-                    nodo = nodo.padre.padre
-                else:
+
                     if nodo == nodo.padre.izquierda:
-                        nodo = nodo.padre
+                        nodo = nodo.padre.padre.derecha
+                        print("nodo " + str(nodo))
                         self._rotacion_derecha(nodo)  # Rotación derecha
-                    nodo.padre.color = 'negro'
-                    nodo.padre.padre.color = 'rojo'
-                    self._rotacion_izquierda(nodo.padre.padre)  # Rotación izquierda
+
+                    elif nodo == nodo.padre.derecha: #caso 3
+                        print("caso 3")
+                        nodo.padre.color = 'negro'
+                        nodo.padre.padre.color = 'rojo'
+                        self._rotacion_izquierda(nodo.padre.padre)
+                
             if nodo == self.raiz:
                 break
         self.raiz.color = 'negro'  # La raíz siempre debe ser negra
