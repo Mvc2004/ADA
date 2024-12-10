@@ -80,12 +80,13 @@ class ArbolRojinegro:
 
     def _balancear_insercion(self, nodo):
         print("nodo" + str(nodo))
+        print("nodo padre" + str(nodo.padre))
         print("nodo padre color" + str(nodo.padre.color))
         while nodo.padre.color == 'rojo':  # Mientras el padre sea rojo
             print("ENTRAAAAAAAAAAAAAAAA")
             print("nodo padre" + str(nodo.padre))
             print("nodo padre padre iz" + str(nodo.padre.padre.izquierda))
-            if nodo.padre != nodo.padre.padre.izquierda:
+            if nodo.padre == nodo.padre.padre.izquierda:
                 print("ENTRAAAAAAAAAAAAAAAA X2222222222")
                 print("nodo padre" + str(nodo.padre))
                 print("nodo padreádre iz" + str(nodo.padre.padre.izquierda))
@@ -99,8 +100,23 @@ class ArbolRojinegro:
                     nodo.padre.padre.color = 'rojo'
                     nodo = nodo.padre.padre
                     print("nodo" + str(nodo))
+
+            elif nodo.padre == nodo.padre.padre.derecha:
+                print("ENTRAAAAAAAAAAAAAAAA X33333")
+                print("nodo padre" + str(nodo.padre))
+                print("nodo padreádre diz" + str(nodo.padre.padre.izquierda))
+                print("nodo padrepadre" + str(nodo.padre.padre.derecha))
+                tio = nodo.padre.padre.derecha  # El tío del nodo
+                print("tio" + str(nodo.padre.padre.derecha) + str(tio.color))
+                if tio.color == 'rojo':
+                    # Caso 1: El tío es rojo, se hace recoloreo
+                    nodo.padre.color = 'negro'
+                    tio.color = 'negro'
+                    nodo.padre.padre.color = 'rojo'
+                    nodo = nodo.padre.padre
+                    print("nodo" + str(nodo))
                 else:
-                    print("nodo padre der" + nodo.padre.derecha)
+                    print("nodo padre der" + str(nodo.padre.derecha))
                     if nodo == nodo.padre.derecha:
                         nodo = nodo.padre
                         print("nodo " + str(nodo.padre))
