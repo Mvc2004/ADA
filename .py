@@ -32,16 +32,16 @@ class ArbolRojinegro:
         print("nodo actual izquierda " + str(nodo_actual.izquierda))
         # Buscar el lugar donde insertar el nuevo nodo
         while nodo_actual != self.NIL:
+            print(f"Comparando '{palabra}' con '{nodo_actual.palabra}'")
             padre = nodo_actual
-            print("padre actualizado " + str(padre))
+            print(f"Padre asignado: {padre.palabra} ({padre.color})")
+            
             if palabra < nodo_actual.palabra:
                 nodo_actual = nodo_actual.izquierda
-                print("ndoo actual izq" + str(nodo_actual))
-                print("ndoo nuevo " + str(nuevo_nodo))
             else:
                 nodo_actual = nodo_actual.derecha
-                print("ndoo actual der" + str(nodo_actual))
-                print("ndoo nuevo " + str(nuevo_nodo))
+
+            print(f"Nuevo nodo_actual: {nodo_actual.palabra if nodo_actual != self.NIL else 'NIL'}")
         
         # Asignar el padre del nuevo nodo
         nuevo_nodo.padre = padre
@@ -51,17 +51,19 @@ class ArbolRojinegro:
         if padre is None:
             self.raiz = nuevo_nodo 
             print("raiz" + str(self.raiz))
-        elif palabra < padre.palabra:
-            padre.izquierda = nuevo_nodo
-            print("padre izq" + str(padre.izquierda))
+        
         else:
-            padre.derecha = nuevo_nodo
-            print("padre der" + str(padre.derecha))
+            if palabra < padre.palabra:
+                padre.izquierda = nuevo_nodo
+                print("padre izq" + str(padre.izquierda))
+            else:
+                padre.derecha = nuevo_nodo
+                print("padre der" + str(padre.derecha))
         
         nuevo_nodo.izquierda = self.NIL
         nuevo_nodo.derecha = self.NIL
         nuevo_nodo.color = 'rojo' 
-        
+
         # Si el nuevo nodo es la raíz, se asegura que sea negro
         if nuevo_nodo.padre is None:
             print("nuevo nodo padre" + str(nuevo_nodo.padre) + " " + str(nuevo_nodo.color))
@@ -70,13 +72,21 @@ class ArbolRojinegro:
             return
         
         # Balanceo del árbol después de insertar el nodo
+        
+        print(f"Insertado: {nuevo_nodo.palabra} (Color: {nuevo_nodo.color})")
+        print(f"Padre: {nuevo_nodo.padre.palabra if nuevo_nodo.padre else 'None'}")
+        print(f"Color del padre: {nuevo_nodo.padre.color if nuevo_nodo.padre else 'None'}")
         self._balancear_insercion(nuevo_nodo)
 
     def _balancear_insercion(self, nodo):
         print("nodo" + str(nodo))
         print("nodo padre color" + str(nodo.padre.color))
         while nodo.padre.color == 'rojo':  # Mientras el padre sea rojo
-            if nodo.padre == nodo.padre.padre.izquierda:
+            print("ENTRAAAAAAAAAAAAAAAA")
+            print("nodo padre" + str(nodo.padre))
+            print("nodo padre padre iz" + str(nodo.padre.padre.izquierda))
+            if nodo.padre != nodo.padre.padre.izquierda:
+                print("ENTRAAAAAAAAAAAAAAAA X2222222222")
                 print("nodo padre" + str(nodo.padre))
                 print("nodo padreádre iz" + str(nodo.padre.padre.izquierda))
                 print("nodo padrepadre" + str(nodo.padre.padre.derecha))
