@@ -1,10 +1,11 @@
+
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
 class NodoRB:
     
     def __init__(self, palabra):
-        self.palabra = palabra #hola rojo
+        self.palabra = palabra
         self.color = 'rojo'  # Color inicial (rojo por defecto)
         self.izquierda = None
         self.derecha = None
@@ -16,146 +17,102 @@ class NodoRB:
 
 class ArbolRojinegro:
     def __init__(self):
-        self.NIL = NodoRB(None)  # Nodo NIL (vacío), que es negro
+        self.NIL = NodoRB(None)  # Nodo NIL (vacío)
         self.NIL.color = 'negro'  # El nodo NIL es negro
         self.raiz = self.NIL  # La raíz del árbol es inicialmente NIL
 
     def insertar(self, palabra):
-        
-        nuevo_nodo = NodoRB(palabra) # Crear un nuevo nodo con la palabra
-        
-        print(str(nuevo_nodo))
+        nuevo_nodo = NodoRB(palabra).__str__() # Crear un nuevo nodo con la palabra
+        print(nuevo_nodo)
         print(self.raiz)
         nodo_actual = self.raiz
-        print(nodo_actual)
         padre = None
-        print("padre " + str(padre))
-        print("nodo actual izquierda " + str(nodo_actual.izquierda))
+        print("padre" + padre)
+        
         # Buscar el lugar donde insertar el nuevo nodo
         while nodo_actual != self.NIL:
             print(f"Comparando '{palabra}' con '{nodo_actual.palabra}'")
             padre = nodo_actual
-            print(f"Padre asignado: {padre.palabra} ({padre.color})")
-            
+            print("padre actualizado" + padre)
             if palabra < nodo_actual.palabra:
                 nodo_actual = nodo_actual.izquierda
             else:
                 nodo_actual = nodo_actual.derecha
-
-            print(f"Nuevo nodo_actual: {nodo_actual.palabra if nodo_actual != self.NIL else 'NIL'}")
+                print("ndoo actual der" + nodo_actual)
         
         # Asignar el padre del nuevo nodo
         nuevo_nodo.padre = padre
-        
-        print("nuevo nodo padre" + str(nuevo_nodo.padre))
-        #print("padre palabra" + padre.palabra)
+        print("nuevo nodo padre" + nuevo_nodo.padre)
         if padre is None:
             self.raiz = nuevo_nodo 
-            print("raiz" + str(self.raiz))
-        
+            print("raiz" + self.raiz)
+        elif padre == self.raiz:
+            padre = nuevo_nodo 
+            print("padre" + padre)
+        elif palabra < padre.palabra:
+            padre.izquierda = nuevo_nodo
+            print("padre izq" + padre.izquierda)
         else:
-            if palabra < padre.palabra:
-                padre.izquierda = nuevo_nodo
-                print("padre izq" + str(padre.izquierda))
-            else:
-                padre.derecha = nuevo_nodo
-                print("padre der" + str(padre.derecha))
+            padre.derecha = nuevo_nodo
+            print("padre der" + padre.derecha)
         
         nuevo_nodo.izquierda = self.NIL
         nuevo_nodo.derecha = self.NIL
-        nuevo_nodo.color = 'rojo' 
-
+        
         # Si el nuevo nodo es la raíz, se asegura que sea negro
         if nuevo_nodo.padre is None:
-            print("nuevo nodo padre" + str(nuevo_nodo.padre) + " " + str(nuevo_nodo.color))
+            print("nuevo nodo padre" + nuevo_nodo.padre + " " + nuevo_nodo.color)
             nuevo_nodo.color = 'negro'
-            print("nuevo nodo padre" + str(nuevo_nodo.padre) +" "+ str(nuevo_nodo.color))
+            print("nuevo nodo padre" + nuevo_nodo.padre +" "+ nuevo_nodo.color)
             return
         
         # Balanceo del árbol después de insertar el nodo
-        
-        print(f"Insertado: {nuevo_nodo.palabra} (Color: {nuevo_nodo.color})")
-        print(f"Padre: {nuevo_nodo.padre.palabra if nuevo_nodo.padre else 'None'}")
-        print(f"Color del padre: {nuevo_nodo.padre.color if nuevo_nodo.padre else 'None'}")
         self._balancear_insercion(nuevo_nodo)
 
     def _balancear_insercion(self, nodo):
-        print("nodo" + str(nodo))
-        print("nodo padre" + str(nodo.padre))
-        print("nodo padre color" + str(nodo.padre.color))
-
+        print("nodo" + nodo)
+        print("nodo padre color" + nodo.padre.color)
         while nodo.padre.color == 'rojo':  # Mientras el padre sea rojo
-            print("ENTRAAAAAAAAAAAAAAAA")
-            print("nodo padre" + str(nodo.padre))
-            print("nodo padre padre iz" + str(nodo.padre.padre.izquierda))
-
             if nodo.padre == nodo.padre.padre.izquierda:
-                print("ENTRAAAAAAAAAAAAAAAA X2222222222")
-                print("nodo padre" + str(nodo.padre))
-                print("nodo padreádre iz" + str(nodo.padre.padre.izquierda))
-                print("nodo padrepadre" + str(nodo.padre.padre.derecha))
+                print("nodo padre" + nodo.padre)
+                print("nodo padreádre iz" + nodo.padre.padre.izquierda)
+                print("nodo padrepadre" + nodo.padre.padre.derecha)
                 tio = nodo.padre.padre.derecha  # El tío del nodo
-                print("tio" + str(nodo.padre.padre.derecha) + str(tio.color))
+                print("tio" + nodo.padre.padre.derecha + tio.color)
                 if tio.color == 'rojo':
                     # Caso 1: El tío es rojo, se hace recoloreo
                     nodo.padre.color = 'negro'
                     tio.color = 'negro'
                     nodo.padre.padre.color = 'rojo'
                     nodo = nodo.padre.padre
-                    print("nodo" + str(nodo))
-
-                elif tio.color == 'negro': #caso 2
-                    print("TIO COLOR NEGRO")
-                    print("nodo padre der" + str(nodo.padre.derecha))
-
-                    if nodo == nodo.padre.derecha:
-                        nodo = nodo.padre
-                        print("nodo " + str(nodo.padre))
-                        self._rotacion_izquierda(nodo)  # Rotación derecha
-                        nodo.padre.color = 'negro'
-                        nodo.padre.padre.color = 'rojo'
-                """else:
+                    print("nodo" + nodo)
+                else:
                     print("nodo padre der" + nodo.padre.derecha)
                     if nodo == nodo.padre.derecha:
                         nodo = nodo.padre
-                        print("nodo " + str(nodo.padre))
+                        print("nodo " + nodo.padre)
                         ##self._rotacion_izquierda(nodo)  # Rotación izquierda
                     nodo.padre.color = 'negro'
                     nodo.padre.padre.color = 'rojo'
-                    #self._rotacion_derecha(nodo.padre.padre)  # Rotación derecha"""
-            elif nodo.padre == nodo.padre.padre.derecha:
-                print("ENTRAAAAAAAAAAAAAAAA X33333")
-                print("nodo padre" + str(nodo.padre))
-                print("nodo padreádre diz" + str(nodo.padre.padre.izquierda))
-                print("nodo padrepadre" + str(nodo.padre.padre.derecha))
-                tio = nodo.padre.padre.izquierda  # El tío del nodo
-                print("tio" + str(nodo.padre.padre.izquierda) + str(tio.color))
+                    #self._rotacion_derecha(nodo.padre.padre)  # Rotación derecha
+            else:
+                tio = nodo.padre.padre.izquierda
                 if tio.color == 'rojo':
-                    # Caso 1: El tío es rojo, se hace recoloreo
+                    # Caso 2: El tío es rojo, se hace recoloreo
                     nodo.padre.color = 'negro'
                     tio.color = 'negro'
                     nodo.padre.padre.color = 'rojo'
                     nodo = nodo.padre.padre
-                    print("nodo" + str(nodo))
-
-                elif tio.color == 'negro' or tio is self.NIL: #caso 2
-                    print("TIO COLOR NEGRO")
-                    print("nodo padre der" + str(nodo.padre.derecha))
-
+                else:
                     if nodo == nodo.padre.izquierda:
-                        nodo = nodo.padre.padre.derecha
-                        print("nodo " + str(nodo))
+                        nodo = nodo.padre
                         self._rotacion_derecha(nodo)  # Rotación derecha
-
-                    elif nodo == nodo.padre.derecha: #caso 3
-                        print("caso 3")
-                        nodo.padre.color = 'negro'
-                        nodo.padre.padre.color = 'rojo'
-                        self._rotacion_izquierda(nodo.padre.padre)
-                
+                    nodo.padre.color = 'negro'
+                    nodo.padre.padre.color = 'rojo'
+                    self._rotacion_izquierda(nodo.padre.padre)  # Rotación izquierda
             if nodo == self.raiz:
                 break
-        self.raiz.color = 'negro'  # La raíz siempre debe ser negra
+        self.raiz.color = 'negro'
 
     def _rotacion_izquierda(self, x):
         y = x.derecha
@@ -211,11 +168,31 @@ class ArbolRojinegro:
             palabras.append(nodo.palabra)
             self._recorrido_inorden_recursivo(nodo.derecha, palabras)
 
+    def validar_balanceo_negro(self, nodo):
+        if nodo == self.NIL:
+            return 1  # Nodo NIL cuenta como negro
+        altura_izq = self.validar_balanceo_negro(nodo.izquierda)
+        altura_der = self.validar_balanceo_negro(nodo.derecha)
+        if altura_izq != altura_der or altura_izq == -1:
+            return -1
+        return altura_izq + (1 if nodo.color == 'negro' else 0)
+
+    def validar_arbol(self):
+        if self.raiz.color != 'negro':
+            return "La raíz no es negra."
+        if self.validar_balanceo_negro(self.raiz) == -1:
+            return "Violación en el balanceo de nodos negros."
+        return "El árbol cumple con las propiedades de un Árbol Rojinegro."
+
     def mostrar_arbol(self, nodo, nivel=0):
         if nodo != self.NIL:
             self.mostrar_arbol(nodo.derecha, nivel + 1)
             print("   " * nivel + f"{nodo.palabra} ({nodo.color})")
             self.mostrar_arbol(nodo.izquierda, nivel + 1)
+
+
+# Aquí se puede incluir la GUI mencionada anteriormente para interactuar con el árbol.
+
 
 
 # Funciones de la GUI
