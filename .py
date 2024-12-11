@@ -4,7 +4,7 @@ from tkinter import filedialog, messagebox
 class NodoRB:
     
     def __init__(self, palabra):
-        self.palabra = palabra #hola rojo
+        self.palabra = palabra #hola rojo 
         self.color = 'rojo'  # Color inicial (rojo por defecto)
         self.izquierda = None
         self.derecha = None
@@ -57,10 +57,11 @@ class ArbolRojinegro:
             if palabra < padre.palabra:
                 padre.izquierda = nuevo_nodo
                 print("padre izq" + str(padre.izquierda))
-            else:
+            elif palabra > padre.palabra:
                 padre.derecha = nuevo_nodo
                 print("padre der" + str(padre.derecha))
-        
+            else: 
+                print("no cumple")
         nuevo_nodo.izquierda = self.NIL
         nuevo_nodo.derecha = self.NIL
         nuevo_nodo.color = 'rojo' 
@@ -112,17 +113,13 @@ class ArbolRojinegro:
                         nodo = nodo.padre
                         print("nodo " + str(nodo.padre))
                         self._rotacion_izquierda(nodo)  # Rotación derecha
+                    
+                    elif nodo == nodo.padre.izquierda: #caso 3
+                        print("caso 3")
                         nodo.padre.color = 'negro'
                         nodo.padre.padre.color = 'rojo'
-                """else:
-                    print("nodo padre der" + nodo.padre.derecha)
-                    if nodo == nodo.padre.derecha:
-                        nodo = nodo.padre
-                        print("nodo " + str(nodo.padre))
-                        ##self._rotacion_izquierda(nodo)  # Rotación izquierda
-                    nodo.padre.color = 'negro'
-                    nodo.padre.padre.color = 'rojo'
-                    #self._rotacion_derecha(nodo.padre.padre)  # Rotación derecha"""
+                        self._rotacion_derecha(nodo.padre.padre)
+                
             elif nodo.padre == nodo.padre.padre.derecha:
                 print("ENTRAAAAAAAAAAAAAAAA X33333")
                 print("nodo padre" + str(nodo.padre))
@@ -138,7 +135,7 @@ class ArbolRojinegro:
                     nodo = nodo.padre.padre
                     print("nodo" + str(nodo))
 
-                elif tio.color == 'negro' or tio is self.NIL: #caso 2
+                elif tio.color == 'negro': #caso 2
                     print("TIO COLOR NEGRO")
                     print("nodo padre der" + str(nodo.padre.derecha))
 
