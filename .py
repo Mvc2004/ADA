@@ -295,6 +295,8 @@ boton_ordenadas = tk.Button(frame, text="Mostrar palabras ordenadas", font=("Ari
 bg="#FF748B", fg="white", command=mostrar_palabras_ordenadas)
 boton_ordenadas.grid(row=4, column=5, columnspan=2, pady=5)
 
+
+
 resultado_palabras = tk.Label(frame, text="Palabras ordenadas:", font=("Arial", 12), bg="white", fg="black", justify="left", anchor="w")
 resultado_palabras.grid(row=5, column=5, columnspan=2, pady=5)
 
