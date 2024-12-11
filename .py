@@ -25,11 +25,9 @@ class ArbolRojinegro:
 
         nuevo_nodo = NodoRB(palabra) #1
         nodo_actual = self.raiz  #1
-        padre = None #1
-
+        padre = None
         while nodo_actual != self.NIL:
-            
-            padre = nodo_actual #1
+            padre = nodo_actual
             
             if palabra < nodo_actual.palabra:
                 nodo_actual = nodo_actual.izquierda
