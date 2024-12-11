@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 class NodoRB:
+    
     def __init__(self, palabra):
         self.palabra = palabra #hola rojo
         self.color = 'rojo'  # Color inicial (rojo por defecto)
