@@ -1,43 +1,43 @@
 class NodoRN:
-    def __init__(self, palabra, color="rojo"):
-        self.palabra = palabra
-        self.color = color  # Puede ser "rojo" o "negro"
-        self.izquierda = None  # Hijo izquierdo
-        self.derecha = None  # Hijo derecho
-        self.padre = None  # Referencia al nodo padre
+    def __init__(self, palabra, color="rojo"): # O(n)= 1
+        self.palabra = palabra # O(n)= 1
+        self.color = color  # Puede ser "rojo" o "negro" # O(n)= 1
+        self.izquierda = None  # Hijo izquierdo # O(n)= 1
+        self.derecha = None  # Hijo derecho # O(n)= 1
+        self.padre = None  # Referencia al nodo padre # O(n)= 1
 
 
 class ArbolRojinegro:
     def __init__(self):
-        self.NIL = NodoRN(None, color="negro")  # Nodo hoja NIL
-        self.raiz = self.NIL
+        self.NIL = NodoRN(None, color="negro")  # Nodo hoja NIL # O(n)= 1
+        self.raiz = self.NIL # O(n)= 1
 
     def insertar(self, palabra):
-        nuevo_nodo = NodoRN(palabra)
-        nuevo_nodo.izquierda = self.NIL
-        nuevo_nodo.derecha = self.NIL
-        self._insertar_nodo(self.raiz, nuevo_nodo)
-        self._balancear_insercion(nuevo_nodo)
+        nuevo_nodo = NodoRN(palabra) # O(n)= 1
+        nuevo_nodo.izquierda = self.NIL # O(n)= 1
+        nuevo_nodo.derecha = self.NIL # O(n)= 1
+        self._insertar_nodo(self.raiz, nuevo_nodo) # O(n)= 1
+        self._balancear_insercion(nuevo_nodo) # O(n)= 1
 
     def _insertar_nodo(self, raiz, nuevo_nodo):
-        nodo_actual = raiz
-        padre = None
-        while nodo_actual != self.NIL:
-            padre = nodo_actual
-            if nuevo_nodo.palabra < nodo_actual.palabra:
-                nodo_actual = nodo_actual.izquierda
+        nodo_actual = raiz # O(n)= 1
+        padre = None # O(n)= 1
+        while nodo_actual != self.NIL:  # O(log n)
+            padre = nodo_actual # O(n)= 1
+            if nuevo_nodo.palabra < nodo_actual.palabra: # O(n)= 1
+                nodo_actual = nodo_actual.izquierda # O(n)= 1
             else:
-                nodo_actual = nodo_actual.derecha
+                nodo_actual = nodo_actual.derecha # O(n)= 1
 
-        nuevo_nodo.padre = padre
-        if padre is None:  # Árbol vacío
-            self.raiz = nuevo_nodo
-        elif nuevo_nodo.palabra < padre.palabra:
-            padre.izquierda = nuevo_nodo
+        nuevo_nodo.padre = padre # O(n)= 1
+        if padre is None:  # Árbol vacío # O(n)= 1
+            self.raiz = nuevo_nodo # O(n)= 1
+        elif nuevo_nodo.palabra < padre.palabra: # O(n)= 1
+            padre.izquierda = nuevo_nodo # O(n)= 1
         else:
-            padre.derecha = nuevo_nodo
+            padre.derecha = nuevo_nodo # O(n)= 1
 
-        nuevo_nodo.color = "rojo"  # Nuevo nodo siempre rojo
+        nuevo_nodo.color = "rojo"   # O(n)= 1 # Nuevo nodo siempre rojo
 
     def _balancear_insercion(self, nodo):
         while nodo != self.raiz and nodo.padre.color == "rojo":
