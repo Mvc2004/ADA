@@ -2,3 +2,5 @@ mango
 banana
 cereza 
 ciruela
+papaya
+guayaba
