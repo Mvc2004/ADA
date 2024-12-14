@@ -1,6 +1,6 @@
 
-from arbol import ArbolBinarioBusqueda
-from interfaz import InterfazGrafica
+from arbolBinarioBusqueda import ArbolBinarioBusqueda
+from interfazArbolBB import InterfazGrafica
 
 if __name__ == "__main__":
     arbol = ArbolBinarioBusqueda()  # Crear una instancia del árbol

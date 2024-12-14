@@ -225,7 +225,7 @@ def generar_estructura_arbol(nodo, prefijo, es_izquierdo):
 # GUI con Tkinter
 ventana = tk.Tk()
 ventana.title("Ordenador de Palabras - Árbol Rojinegro")
-ventana.geometry("500x500")
+ventana.geometry("430x500")
 ventana.configure(bg="white")
 
 arbol = ArbolRojinegro()
